@@ -3,19 +3,18 @@ import "./App.css"
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { Toaster } from 'react-hot-toast'
 import Home from './pages/Home'
-import Sucess from './pages/Sucess'
+import Success from './Pages/Success'   // ✅ Capital "S"
 import NotFound from './pages/NotFound'
-
 
 const App = () => {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Home/>} />
-        <Route path="/sucess" element={<Sucess/>} />
-        <Route path="*" element={<NotFound/>} />
+        <Route path="/" element={<Home />} />
+        <Route path="/success" element={<Success />} />  {/* ✅ Capital "S" */}
+        <Route path="*" element={<NotFound />} />
       </Routes>
-      <Toaster/>
+      <Toaster />
     </Router>
   )
 }

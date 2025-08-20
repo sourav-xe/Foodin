@@ -1,7 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import { HiOutlineArrowNarrowRight } from "react-icons/hi";
 import axios from "axios";
-import { useState } from "react";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
@@ -11,7 +10,7 @@ const Reservation = () => {
   const [email, setEmail] = useState("");
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
-  const [phone, setPhone] = useState(0);
+  const [phone, setPhone] = useState(""); // use string instead of number
   const navigate = useNavigate();
 
   const handleReservation = async (e) => {
@@ -27,16 +26,18 @@ const Reservation = () => {
           withCredentials: true,
         }
       );
-      toast.success(data.message);
+      toast.success(data.message || "Reservation successful ✅");
+      // reset form
       setFirstName("");
       setLastName("");
-      setPhone(0);
+      setPhone("");
       setEmail("");
       setTime("");
       setDate("");
       navigate("/success");
     } catch (error) {
-      toast.error(error.response.data.message);
+      console.error(error);
+      toast.error(error.response?.data?.message || "Something went wrong ❌");
     }
   };
 
@@ -44,39 +45,41 @@ const Reservation = () => {
     <section className="reservation" id="reservation">
       <div className="container">
         <div className="banner">
-          <img src="/reservation.png" alt="res" />
+          <img src="/reservation.png" alt="reservation" />
         </div>
         <div className="banner">
           <div className="reservation_form_box">
             <h1>MAKE A RESERVATION</h1>
             <p>For Further Questions, Please Call</p>
-            <form>
+            <form onSubmit={handleReservation}>
               <div>
                 <input
                   type="text"
                   placeholder="First Name"
                   value={firstName}
                   onChange={(e) => setFirstName(e.target.value)}
+                  required
                 />
                 <input
                   type="text"
                   placeholder="Last Name"
                   value={lastName}
                   onChange={(e) => setLastName(e.target.value)}
+                  required
                 />
               </div>
               <div>
                 <input
                   type="date"
-                  placeholder="Date"
                   value={date}
                   onChange={(e) => setDate(e.target.value)}
+                  required
                 />
                 <input
                   type="time"
-                  placeholder="Time"
                   value={time}
                   onChange={(e) => setTime(e.target.value)}
+                  required
                 />
               </div>
               <div>
@@ -86,15 +89,17 @@ const Reservation = () => {
                   className="email_tag"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
+                  required
                 />
                 <input
-                  type="number"
+                  type="tel"
                   placeholder="Phone"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
+                  required
                 />
               </div>
-              <button type="submit" onClick={handleReservation}>
+              <button type="submit">
                 RESERVE NOW{" "}
                 <span>
                   <HiOutlineArrowNarrowRight />
